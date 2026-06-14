@@ -8,13 +8,15 @@ This project is part of my Go learning journey focused on DevOps, Platform Engin
 
 Build a Jenkins reporting tool while learning practical Go concepts used in real-world platform engineering and infrastructure tooling.
 
-## Version 1 Features
+## Version 2 Features
 
 * Read build information from a JSON file
 * Parse JSON into Go structs
 * Generate a formatted build report
 * Handle file reading errors gracefully
 * Handle JSON parsing errors gracefully
+* Organize code using reusable Go packages
+* Separate application logic from business logic
 
 ## Learning Objectives
 
@@ -27,10 +29,17 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * File Reading
 * Error Handling
 
+### Completed in Version 2
+
+* Packages
+* Separation of Concerns
+* Exported Functions
+* Code Organization
+* Reusable Components
+
 ### Upcoming
 
 * HTTP clients and REST APIs
-* Packages and project organization
 * Command-line applications
 * Environment variables
 * Authentication
@@ -40,11 +49,11 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 
 ### Version 1
 
-Parse build information from a JSON file.
+Parse build information from a JSON file. ✅
 
 ### Version 2
 
-Move logic into reusable packages.
+Move logic into reusable packages. ✅
 
 ### Version 3
 
@@ -129,5 +138,5 @@ go run main.go
 Current Version:
 
 ```text
-v0.1.0
+v0.2.0
 ```
