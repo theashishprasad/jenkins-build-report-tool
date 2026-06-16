@@ -1,6 +1,6 @@
 # Jenkins Build Report Tool
 
-A Go CLI application that reads Jenkins build information from a JSON file and generates a simple build report.
+A Go CLI application that fetches Jenkins build information from an HTTP endpoint and generates a simple build report.
 
 This project is part of my Go learning journey focused on DevOps, Platform Engineering, Cloud Infrastructure, and Automation.
 
@@ -8,12 +8,13 @@ This project is part of my Go learning journey focused on DevOps, Platform Engin
 
 Build a Jenkins reporting tool while learning practical Go concepts used in real-world platform engineering and infrastructure tooling.
 
-## Version 2 Features
+## Version 3 Features
 
-* Read build information from a JSON file
+* Fetch build information from an HTTP endpoint
 * Parse JSON into Go structs
 * Generate a formatted build report
-* Handle file reading errors gracefully
+* Handle HTTP request errors gracefully
+* Handle HTTP response validation
 * Handle JSON parsing errors gracefully
 * Organize code using reusable Go packages
 * Separate application logic from business logic
@@ -37,9 +38,18 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * Code Organization
 * Reusable Components
 
+### Completed in Version 3
+
+* net/http
+* HTTP Clients
+* HTTP Requests
+* HTTP Response Handling
+* Response Body Processing
+* API Communication
+* Status Code Validation
+
 ### Upcoming
 
-* HTTP clients and REST APIs
 * Command-line applications
 * Environment variables
 * Authentication
@@ -57,7 +67,7 @@ Move logic into reusable packages. ✅
 
 ### Version 3
 
-Fetch build data using HTTP APIs.
+Fetch build data using HTTP APIs. ✅
 
 ### Version 4
 
@@ -97,13 +107,23 @@ jenkins-build-report-tool/
 
 ## How to Run
 
-Run the application:
+### Start Local HTTP Server
+
+From the project root:
+
+```bash
+python3 -m http.server 8080
+```
+
+### Run Application
+
+In a separate terminal:
 
 ```bash
 go run main.go
 ```
 
-## Sample Input
+## Sample API Response
 
 ```json
 {
@@ -112,6 +132,12 @@ go run main.go
   "result": "SUCCESS",
   "duration": 120000
 }
+```
+
+Endpoint:
+
+```text
+http://localhost:8080/sample/build.json
 ```
 
 ## Sample Output
@@ -133,10 +159,17 @@ go build ./...
 go run main.go
 ```
 
+### Manual Tests
+
+* Valid HTTP response
+* HTTP server unavailable
+* Invalid JSON response
+* Non-200 HTTP response
+
 ## Version
 
 Current Version:
 
 ```text
-v0.2.0
+v0.3.0
 ```

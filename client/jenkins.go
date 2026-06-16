@@ -2,21 +2,38 @@ package client
 
 import (
 	"encoding/json"
-	"os"
+	"fmt"
+	"io"
+	"net/http"
 
 	"github.com/theashishprasad/jenkins-build-report-tool/models"
 )
 
-// LoadBuild reads and parses build information from a JSON file.
+// LoadBuild reads and parses build information from an HTTP endpoint.
 func LoadBuild() (models.Build, error) {
 	var build models.Build
-	jsonData, err := os.ReadFile("sample/build.json")
 
+	res, err := http.Get("http://localhost:8080/sample/build.json")
 	if err != nil {
 		return build, err
 	}
 
-	err = json.Unmarshal(jsonData, &build)
+	defer res.Body.Close()
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return build, err
+	}
+
+	if res.StatusCode > 299 {
+		return build, fmt.Errorf(
+			"response failed with status code: %d and body: %s",
+			res.StatusCode,
+			body,
+		)
+	}
+
+	err = json.Unmarshal(body, &build)
 	if err != nil {
 		return build, err
 	}
