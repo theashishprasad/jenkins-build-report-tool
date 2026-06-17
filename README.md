@@ -8,11 +8,12 @@ This project is part of my Go learning journey focused on DevOps, Platform Engin
 
 Build a Jenkins reporting tool while learning practical Go concepts used in real-world platform engineering and infrastructure tooling.
 
-## Version 3 Features
+## Version 4 Features
 
 * Fetch build information from an HTTP endpoint
 * Parse JSON into Go structs
 * Generate a formatted build report
+* Generate human-readable build status summaries
 * Handle HTTP request errors gracefully
 * Handle HTTP response validation
 * Handle JSON parsing errors gracefully
@@ -48,6 +49,15 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * API Communication
 * Status Code Validation
 
+### Completed in Version 4
+
+* Conditional Logic
+* Business Rules
+* if / else if Statements
+* Status Mapping
+* Fallback Handling
+* User-Friendly Reporting
+
 ### Upcoming
 
 * Command-line applications
@@ -71,7 +81,7 @@ Fetch build data using HTTP APIs. ✅
 
 ### Version 4
 
-Generate build status summaries.
+Generate build status summaries. ✅
 
 ### Version 5
 
@@ -149,7 +159,21 @@ Job Name : my-app-build
 Build No : 125
 Status   : SUCCESS
 Duration : 120 sec
+
+Summary
+
+Build completed successfully.
 ```
+
+## Supported Build Statuses
+
+| Status          | Summary                               |
+| --------------- | ------------------------------------- |
+| SUCCESS         | Build completed successfully.         |
+| FAILURE         | Build failed. Investigation required. |
+| ABORTED         | Build was aborted.                    |
+| UNSTABLE        | Build completed with warnings.        |
+| Any Other Value | Unknown build status.                 |
 
 ## Validation
 
@@ -165,11 +189,16 @@ go run main.go
 * HTTP server unavailable
 * Invalid JSON response
 * Non-200 HTTP response
+* SUCCESS status
+* FAILURE status
+* ABORTED status
+* UNSTABLE status
+* Unknown status
 
 ## Version
 
 Current Version:
 
 ```text
-v0.3.0
+v0.4.0
 ```
