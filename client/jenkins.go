@@ -10,10 +10,10 @@ import (
 )
 
 // LoadBuild reads and parses build information from an HTTP endpoint.
-func LoadBuild() (models.Build, error) {
+func LoadBuild(url string) (models.Build, error) {
 	var build models.Build
 
-	res, err := http.Get("http://localhost:8080/sample/build.json")
+	res, err := http.Get(url)
 	if err != nil {
 		return build, err
 	}
