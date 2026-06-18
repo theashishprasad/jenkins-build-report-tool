@@ -8,15 +8,17 @@ This project is part of my Go learning journey focused on DevOps, Platform Engin
 
 Build a Jenkins reporting tool while learning practical Go concepts used in real-world platform engineering and infrastructure tooling.
 
-## Version 4 Features
+## Version 5 Features
 
 * Fetch build information from an HTTP endpoint
+* Accept endpoint URL as a command-line argument
 * Parse JSON into Go structs
 * Generate a formatted build report
 * Generate human-readable build status summaries
 * Handle HTTP request errors gracefully
 * Handle HTTP response validation
 * Handle JSON parsing errors gracefully
+* Validate command-line input
 * Organize code using reusable Go packages
 * Separate application logic from business logic
 
@@ -58,9 +60,17 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * Fallback Handling
 * User-Friendly Reporting
 
+### Completed in Version 5
+
+* os.Args
+* Command-Line Applications
+* CLI Input Validation
+* Runtime Configuration
+* User Input Handling
+* Parameterized API Requests
+
 ### Upcoming
 
-* Command-line applications
 * Environment variables
 * Authentication
 * Working with external systems
@@ -85,7 +95,7 @@ Generate build status summaries. ✅
 
 ### Version 5
 
-Accept input using command-line arguments.
+Accept input using command-line arguments. ✅
 
 ### Version 6
 
@@ -130,7 +140,7 @@ python3 -m http.server 8080
 In a separate terminal:
 
 ```bash
-go run main.go
+go run main.go http://localhost:8080/sample/build.json
 ```
 
 ## Sample API Response
@@ -142,12 +152,6 @@ go run main.go
   "result": "SUCCESS",
   "duration": 120000
 }
-```
-
-Endpoint:
-
-```text
-http://localhost:8080/sample/build.json
 ```
 
 ## Sample Output
@@ -180,12 +184,13 @@ Build completed successfully.
 ```bash
 go fmt ./...
 go build ./...
-go run main.go
 ```
 
 ### Manual Tests
 
 * Valid HTTP response
+* Missing CLI argument
+* Invalid URL
 * HTTP server unavailable
 * Invalid JSON response
 * Non-200 HTTP response
@@ -200,5 +205,5 @@ go run main.go
 Current Version:
 
 ```text
-v0.4.0
+v0.5.0
 ```

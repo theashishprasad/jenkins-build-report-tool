@@ -2,12 +2,21 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/theashishprasad/jenkins-build-report-tool/client"
 )
 
 func main() {
-	build, err := client.LoadBuild()
+	args := os.Args
+	if len(args) != 2 {
+		fmt.Println("Usage: go run main.go <endpoint-url>")
+		return
+	}
+
+	url := args[1]
+
+	build, err := client.LoadBuild(url)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
