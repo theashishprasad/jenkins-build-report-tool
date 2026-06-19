@@ -1,6 +1,30 @@
-{
+[{
     "name": "my-app-build",
     "number": 125,
     "result": "SUCCESS",
     "duration": 120000
-}
+},
+{
+    "name": "my-app-build",
+    "number": 124,
+    "result": "UNSTABLE",
+    "duration": 210000
+},
+{
+    "name": "my-app-build",
+    "number": 123,
+    "result": "FAILURE",
+    "duration": 100000
+},
+{
+    "name": "my-app-build",
+    "number": 122,
+    "result": "SUCCESS",
+    "duration": 120000
+},
+{
+    "name": "my-app-build",
+    "number": 121,
+    "result": "ABORTED",
+    "duration": 150000
+}]
