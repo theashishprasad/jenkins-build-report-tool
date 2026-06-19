@@ -1,6 +1,6 @@
 # Jenkins Build Report Tool
 
-A Go CLI application that fetches Jenkins build information from an HTTP endpoint and generates a simple build report.
+A Go CLI application that fetches Jenkins build information from an HTTP endpoint and generates build statistics and status reports.
 
 This project is part of my Go learning journey focused on DevOps, Platform Engineering, Cloud Infrastructure, and Automation.
 
@@ -8,13 +8,15 @@ This project is part of my Go learning journey focused on DevOps, Platform Engin
 
 Build a Jenkins reporting tool while learning practical Go concepts used in real-world platform engineering and infrastructure tooling.
 
-## Version 5 Features
+## Version 6 Features
 
 * Fetch build information from an HTTP endpoint
 * Accept endpoint URL as a command-line argument
-* Parse JSON into Go structs
-* Generate a formatted build report
-* Generate human-readable build status summaries
+* Parse JSON into Go structs and slices
+* Support multiple build reports
+* Generate build statistics and status aggregation
+* Count builds by status
+* Calculate total builds processed
 * Handle HTTP request errors gracefully
 * Handle HTTP response validation
 * Handle JSON parsing errors gracefully
@@ -69,11 +71,22 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * User Input Handling
 * Parameterized API Requests
 
+### Completed in Version 6
+
+* Slices
+* JSON Arrays
+* Collection Processing
+* Aggregation
+* Statistics Generation
+* map[string]int
+* Counting and Grouping Data
+* Iterating Over Collections
+
 ### Upcoming
 
-* Environment variables
 * Authentication
 * Working with external systems
+* Real Jenkins Integration
 
 ## Roadmap
 
@@ -99,7 +112,7 @@ Accept input using command-line arguments. ✅
 
 ### Version 6
 
-Support multiple build reports.
+Support multiple build reports. ✅
 
 ### Version 7
 
@@ -146,38 +159,52 @@ go run main.go http://localhost:8080/sample/build.json
 ## Sample API Response
 
 ```json
-{
-  "name": "my-app-build",
-  "number": 125,
-  "result": "SUCCESS",
-  "duration": 120000
-}
+[
+  {
+    "name": "my-app-build",
+    "number": 125,
+    "result": "SUCCESS",
+    "duration": 120000
+  },
+  {
+    "name": "my-app-build",
+    "number": 124,
+    "result": "UNSTABLE",
+    "duration": 210000
+  },
+  {
+    "name": "my-app-build",
+    "number": 123,
+    "result": "FAILURE",
+    "duration": 100000
+  },
+  {
+    "name": "my-app-build",
+    "number": 122,
+    "result": "SUCCESS",
+    "duration": 120000
+  },
+  {
+    "name": "my-app-build",
+    "number": 121,
+    "result": "ABORTED",
+    "duration": 150000
+  }
+]
 ```
 
 ## Sample Output
 
 ```text
-Build Report
+Total Builds : 5
 
-Job Name : my-app-build
-Build No : 125
-Status   : SUCCESS
-Duration : 120 sec
-
-Summary
-
-Build completed successfully.
+SUCCESS : 2
+UNSTABLE : 1
+FAILURE : 1
+ABORTED : 1
 ```
 
-## Supported Build Statuses
-
-| Status          | Summary                               |
-| --------------- | ------------------------------------- |
-| SUCCESS         | Build completed successfully.         |
-| FAILURE         | Build failed. Investigation required. |
-| ABORTED         | Build was aborted.                    |
-| UNSTABLE        | Build completed with warnings.        |
-| Any Other Value | Unknown build status.                 |
+> Note: Output order may vary because Go maps do not guarantee iteration order.
 
 ## Validation
 
@@ -194,16 +221,15 @@ go build ./...
 * HTTP server unavailable
 * Invalid JSON response
 * Non-200 HTTP response
-* SUCCESS status
-* FAILURE status
-* ABORTED status
-* UNSTABLE status
-* Unknown status
+* Multiple build records
+* Empty JSON array
+* Mixed build statuses
+* Unknown build status values
 
 ## Version
 
 Current Version:
 
 ```text
-v0.5.0
+v0.6.0
 ```
