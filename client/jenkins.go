@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/theashishprasad/jenkins-build-report-tool/models"
 )
@@ -13,22 +14,38 @@ import (
 func LoadBuild(url string) ([]models.Build, error) {
 	var builds []models.Build
 
-	res, err := http.Get(url)
+	client := &http.Client{}
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return builds, err
 	}
 
-	defer res.Body.Close()
+	jenkinsUser := os.Getenv("JENKINS_USER")
+	jenkinsToken := os.Getenv("JENKINS_TOKEN")
 
-	body, err := io.ReadAll(res.Body)
+	if jenkinsUser == "" || jenkinsToken == "" {
+		return builds, fmt.Errorf("JENKINS_USER or JENKINS_TOKEN not set")
+	}
+
+	req.SetBasicAuth(jenkinsUser, jenkinsToken)
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return builds, err
 	}
 
-	if res.StatusCode > 299 {
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return builds, err
+	}
+
+	if resp.StatusCode > 299 {
 		return builds, fmt.Errorf(
 			"response failed with status code: %d and body: %s",
-			res.StatusCode,
+			resp.StatusCode,
 			body,
 		)
 	}

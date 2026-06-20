@@ -8,9 +8,11 @@ This project is part of my Go learning journey focused on DevOps, Platform Engin
 
 Build a Jenkins reporting tool while learning practical Go concepts used in real-world platform engineering and infrastructure tooling.
 
-## Version 6 Features
+## Version 7 Features
 
 * Fetch build information from an HTTP endpoint
+* Support Jenkins authentication using environment variables
+* Use HTTP Basic Authentication
 * Accept endpoint URL as a command-line argument
 * Parse JSON into Go structs and slices
 * Support multiple build reports
@@ -82,11 +84,22 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * Counting and Grouping Data
 * Iterating Over Collections
 
+### Completed in Version 7
+
+* os.Getenv()
+* Environment Variables
+* Basic Authentication
+* HTTP Request Construction
+* http.NewRequest()
+* req.SetBasicAuth()
+* Secure Configuration
+* Runtime Credential Management
+
 ### Upcoming
 
-* Authentication
-* Working with external systems
 * Real Jenkins Integration
+* Advanced API Consumption
+* Production-Grade Configuration
 
 ## Roadmap
 
@@ -116,7 +129,7 @@ Support multiple build reports. ✅
 
 ### Version 7
 
-Add Jenkins authentication.
+Add Jenkins authentication. ✅
 
 ### Version 8
 
@@ -140,6 +153,22 @@ jenkins-build-report-tool/
 
 ## How to Run
 
+### Set Environment Variables
+
+Linux/macOS:
+
+```bash
+export JENKINS_USER=test-user
+export JENKINS_TOKEN=test-token
+```
+
+Windows PowerShell:
+
+```powershell
+$env:JENKINS_USER="test-user"
+$env:JENKINS_TOKEN="test-token"
+```
+
 ### Start Local HTTP Server
 
 From the project root:
@@ -149,8 +178,6 @@ python3 -m http.server 8080
 ```
 
 ### Run Application
-
-In a separate terminal:
 
 ```bash
 go run main.go http://localhost:8080/sample/build.json
@@ -215,7 +242,10 @@ go build ./...
 
 ### Manual Tests
 
-* Valid HTTP response
+* Valid credentials and valid endpoint
+* Missing JENKINS_USER
+* Missing JENKINS_TOKEN
+* Invalid credentials
 * Missing CLI argument
 * Invalid URL
 * HTTP server unavailable
@@ -224,12 +254,18 @@ go build ./...
 * Multiple build records
 * Empty JSON array
 * Mixed build statuses
-* Unknown build status values
+
+## Environment Variables
+
+| Variable      | Description                   |
+| ------------- | ----------------------------- |
+| JENKINS_USER  | Jenkins username              |
+| JENKINS_TOKEN | Jenkins API token or password |
 
 ## Version
 
 Current Version:
 
 ```text
-v0.6.0
+v0.7.0
 ```
