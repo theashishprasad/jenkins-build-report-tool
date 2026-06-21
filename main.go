@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/theashishprasad/jenkins-build-report-tool/client"
 )
@@ -16,23 +17,17 @@ func main() {
 
 	url := args[1]
 
-	builds, err := client.LoadBuild(url)
+	build, err := client.LoadBuild(url)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
 
-	totalBuilds := len(builds)
-	fmt.Printf("Total Builds : %d\n\n", totalBuilds)
+	fmt.Println("Build Report\n")
 
-	status := make(map[string]int)
-
-	for _, build := range builds {
-		status[build.Result]++
-	}
-
-	for key, val := range status {
-		fmt.Printf("%s : %d\n", key, val)
-	}
+	fmt.Printf("Job Name : %s\n", strings.Split(build.FullDisplayName, " #")[0])
+	fmt.Printf("Build No : %d\n", build.Number)
+	fmt.Printf("Status   : %s\n", build.Result)
+	fmt.Printf("Duration : %.2f sec\n", float64(build.Duration)/1000)
 
 }
