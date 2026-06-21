@@ -1,6 +1,6 @@
 # Jenkins Build Report Tool
 
-A Go CLI application that fetches Jenkins build information from an HTTP endpoint and generates build statistics and status reports.
+A Go CLI application that integrates with the Jenkins API to retrieve build information and generate build reports.
 
 This project is part of my Go learning journey focused on DevOps, Platform Engineering, Cloud Infrastructure, and Automation.
 
@@ -8,17 +8,14 @@ This project is part of my Go learning journey focused on DevOps, Platform Engin
 
 Build a Jenkins reporting tool while learning practical Go concepts used in real-world platform engineering and infrastructure tooling.
 
-## Version 7 Features
+## Final Features
 
-* Fetch build information from an HTTP endpoint
+* Integrate with the Jenkins REST API
 * Support Jenkins authentication using environment variables
 * Use HTTP Basic Authentication
-* Accept endpoint URL as a command-line argument
-* Parse JSON into Go structs and slices
-* Support multiple build reports
-* Generate build statistics and status aggregation
-* Count builds by status
-* Calculate total builds processed
+* Accept Jenkins API endpoint URL as a command-line argument
+* Parse Jenkins API responses into Go structs
+* Generate formatted build reports
 * Handle HTTP request errors gracefully
 * Handle HTTP response validation
 * Handle JSON parsing errors gracefully
@@ -28,7 +25,7 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 
 ## Learning Objectives
 
-### Completed in Version 1
+### Version 1
 
 * Structs
 * JSON
@@ -37,7 +34,7 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * File Reading
 * Error Handling
 
-### Completed in Version 2
+### Version 2
 
 * Packages
 * Separation of Concerns
@@ -45,7 +42,7 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * Code Organization
 * Reusable Components
 
-### Completed in Version 3
+### Version 3
 
 * net/http
 * HTTP Clients
@@ -55,7 +52,7 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * API Communication
 * Status Code Validation
 
-### Completed in Version 4
+### Version 4
 
 * Conditional Logic
 * Business Rules
@@ -64,7 +61,7 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * Fallback Handling
 * User-Friendly Reporting
 
-### Completed in Version 5
+### Version 5
 
 * os.Args
 * Command-Line Applications
@@ -73,7 +70,7 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * User Input Handling
 * Parameterized API Requests
 
-### Completed in Version 6
+### Version 6
 
 * Slices
 * JSON Arrays
@@ -84,7 +81,7 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * Counting and Grouping Data
 * Iterating Over Collections
 
-### Completed in Version 7
+### Version 7
 
 * os.Getenv()
 * Environment Variables
@@ -95,11 +92,14 @@ Build a Jenkins reporting tool while learning practical Go concepts used in real
 * Secure Configuration
 * Runtime Credential Management
 
-### Upcoming
+### Version 8
 
-* Real Jenkins Integration
-* Advanced API Consumption
-* Production-Grade Configuration
+* Jenkins API Integration
+* API Contract Mapping
+* Production-Style Tooling
+* External System Integration
+* Real API Consumption
+* Build Metadata Processing
 
 ## Roadmap
 
@@ -133,7 +133,7 @@ Add Jenkins authentication. ✅
 
 ### Version 8
 
-Integrate with a real Jenkins API.
+Integrate with a real Jenkins API. ✅
 
 ## Project Structure
 
@@ -144,8 +144,6 @@ jenkins-build-report-tool/
 │   └── jenkins.go
 ├── models/
 │   └── build.go
-├── sample/
-│   └── build.json
 ├── README.md
 ├── .gitignore
 └── go.mod
@@ -158,80 +156,50 @@ jenkins-build-report-tool/
 Linux/macOS:
 
 ```bash
-export JENKINS_USER=test-user
-export JENKINS_TOKEN=test-token
+export JENKINS_USER=my-user
+export JENKINS_TOKEN=my-token
 ```
 
 Windows PowerShell:
 
 ```powershell
-$env:JENKINS_USER="test-user"
-$env:JENKINS_TOKEN="test-token"
-```
-
-### Start Local HTTP Server
-
-From the project root:
-
-```bash
-python3 -m http.server 8080
+$env:JENKINS_USER="my-user"
+$env:JENKINS_TOKEN="my-token"
 ```
 
 ### Run Application
 
 ```bash
-go run main.go http://localhost:8080/sample/build.json
+go run main.go "<jenkins-api-url>"
 ```
 
-## Sample API Response
+Example:
+
+```bash
+go run main.go "https://jenkins.example.com/job/service-a/456/api/json"
+```
+
+## Example Jenkins API Response
 
 ```json
-[
-  {
-    "name": "my-app-build",
-    "number": 125,
-    "result": "SUCCESS",
-    "duration": 120000
-  },
-  {
-    "name": "my-app-build",
-    "number": 124,
-    "result": "UNSTABLE",
-    "duration": 210000
-  },
-  {
-    "name": "my-app-build",
-    "number": 123,
-    "result": "FAILURE",
-    "duration": 100000
-  },
-  {
-    "name": "my-app-build",
-    "number": 122,
-    "result": "SUCCESS",
-    "duration": 120000
-  },
-  {
-    "name": "my-app-build",
-    "number": 121,
-    "result": "ABORTED",
-    "duration": 150000
-  }
-]
+{
+  "fullDisplayName": "service-a #456",
+  "number": 456,
+  "result": "SUCCESS",
+  "duration": 180000
+}
 ```
 
 ## Sample Output
 
 ```text
-Total Builds : 5
+Build Report
 
-SUCCESS : 2
-UNSTABLE : 1
-FAILURE : 1
-ABORTED : 1
+Job Name : service-a
+Build No : 456
+Status   : SUCCESS
+Duration : 180.00 sec
 ```
-
-> Note: Output order may vary because Go maps do not guarantee iteration order.
 
 ## Validation
 
@@ -240,20 +208,18 @@ go fmt ./...
 go build ./...
 ```
 
-### Manual Tests
+## Manual Tests
 
-* Valid credentials and valid endpoint
+* Valid Jenkins credentials
 * Missing JENKINS_USER
 * Missing JENKINS_TOKEN
-* Invalid credentials
+* Invalid credentials (401)
 * Missing CLI argument
 * Invalid URL
-* HTTP server unavailable
+* Jenkins unavailable
 * Invalid JSON response
 * Non-200 HTTP response
-* Multiple build records
-* Empty JSON array
-* Mixed build statuses
+* Successful Jenkins API response
 
 ## Environment Variables
 
@@ -262,10 +228,32 @@ go build ./...
 | JENKINS_USER  | Jenkins username              |
 | JENKINS_TOKEN | Jenkins API token or password |
 
+## Technologies Used
+
+* Go
+* net/http
+* JSON
+* Basic Authentication
+* Environment Variables
+* CLI Arguments
+* REST APIs
+
+## Learning Outcomes
+
+Through this project I practiced:
+
+* Building CLI applications in Go
+* Designing reusable packages
+* Working with JSON APIs
+* Consuming REST endpoints
+* Implementing authentication
+* Managing runtime configuration
+* Handling errors idiomatically
+* Integrating with external systems
+* Building production-style infrastructure tooling
+
 ## Version
 
-Current Version:
-
 ```text
-v0.7.0
+v0.8.0
 ```
